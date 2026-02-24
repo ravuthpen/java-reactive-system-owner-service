@@ -1,4 +1,4 @@
-package com.piseth.java.schoo.ownerservice;
+package com.piseth.java.school.ownerservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

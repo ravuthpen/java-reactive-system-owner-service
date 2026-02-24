@@ -1,4 +1,4 @@
-package com.piseth.java.schoo.ownerservice.config;
+package com.piseth.java.school.ownerservice.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;
