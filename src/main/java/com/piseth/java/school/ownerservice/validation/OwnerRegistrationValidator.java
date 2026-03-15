@@ -1,13 +1,11 @@
 package com.piseth.java.school.ownerservice.validation;
-import lombok.NonNull;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import com.piseth.java.school.ownerservice.dto.OwnerRegisterRequest;
 import com.piseth.java.school.ownerservice.exception.BadRequestException;
 import com.piseth.java.school.ownerservice.repository.OwnerRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -32,7 +30,7 @@ public class OwnerRegistrationValidator {
      * Mono<Void> means:
      *   "I only care whether it completes or errors."
      */
-    public Mono<@NonNull Void> validate(OwnerRegisterRequest request) {
+    public Mono<Void> validate(OwnerRegisterRequest request) {
         validateRequiredContact(request);   // pure synchronous check
         return validateUniqueness(request); // reactive DB validation
     }
@@ -67,7 +65,7 @@ public class OwnerRegistrationValidator {
      * We chain email check -> then phone check.
      * If email fails, phone check will NOT execute.
      */
-    private Mono<@NonNull Void> validateUniqueness(OwnerRegisterRequest request) {
+    private Mono<Void> validateUniqueness(OwnerRegisterRequest request) {
         return checkEmailUnique(request.getEmail())
                 .then(checkPhoneUnique(request.getPhone()));
     }
@@ -86,7 +84,7 @@ public class OwnerRegistrationValidator {
      * .then() discards the Boolean result
      * and converts the stream into Mono<Void>.
      */
-    private Mono<@NonNull Void> checkEmailUnique(String email) {
+    private Mono<Void> checkEmailUnique(String email) {
         if (!StringUtils.hasText(email)) {
             return Mono.empty(); // nothing to validate
         }
@@ -105,7 +103,7 @@ public class OwnerRegistrationValidator {
      * NOTE:
      * This pattern is reusable for any uniqueness validation.
      */
-    private Mono<@NonNull Void> checkPhoneUnique(String phone) {
+    private Mono<Void> checkPhoneUnique(String phone) {
         if (!StringUtils.hasText(phone)) {
             return Mono.empty();
         }

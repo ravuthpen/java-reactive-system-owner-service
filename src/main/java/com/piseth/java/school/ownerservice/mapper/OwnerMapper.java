@@ -18,4 +18,4 @@ public interface OwnerMapper {
     OwnerResponse toResponse (Owner owner);
 
 }
-// Mapstruct
+// MapStruct

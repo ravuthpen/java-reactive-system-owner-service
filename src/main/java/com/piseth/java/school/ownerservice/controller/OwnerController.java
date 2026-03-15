@@ -4,7 +4,6 @@ import com.piseth.java.school.ownerservice.dto.OwnerRegisterRequest;
 import com.piseth.java.school.ownerservice.dto.OwnerResponse;
 import com.piseth.java.school.ownerservice.service.OwnerService;
 import jakarta.validation.Valid;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +18,7 @@ public class OwnerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<@NonNull OwnerResponse> register(@Valid @RequestBody OwnerRegisterRequest request) {
+    public Mono<OwnerResponse> register(@Valid @RequestBody OwnerRegisterRequest request) {
         return ownerService.register(request);
     }
 }
