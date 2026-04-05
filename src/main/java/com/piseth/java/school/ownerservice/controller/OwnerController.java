@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/owners")
@@ -20,5 +22,10 @@ public class OwnerController {
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<OwnerResponse> register(@Valid @RequestBody OwnerRegisterRequest request) {
         return ownerService.register(request);
+    }
+
+    @GetMapping("/{ownerId}")
+    public Mono<OwnerResponse> getOwnerById(@PathVariable UUID ownerId){
+        return ownerService.findById(ownerId);
     }
 }

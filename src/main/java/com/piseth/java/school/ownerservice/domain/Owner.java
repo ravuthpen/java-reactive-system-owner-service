@@ -15,7 +15,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Table("owners")
 public class Owner {
-
     @Id
     private UUID id;    // keep null if DB generates it
     private String email;

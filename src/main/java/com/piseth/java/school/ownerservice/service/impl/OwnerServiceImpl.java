@@ -4,6 +4,7 @@ package com.piseth.java.school.ownerservice.service.impl;
 import com.piseth.java.school.ownerservice.domain.Owner;
 import com.piseth.java.school.ownerservice.dto.OwnerRegisterRequest;
 import com.piseth.java.school.ownerservice.dto.OwnerResponse;
+import com.piseth.java.school.ownerservice.exception.OwnerNotFoundException;
 import com.piseth.java.school.ownerservice.factory.OwnerFactory;
 import com.piseth.java.school.ownerservice.mapper.OwnerMapper;
 import com.piseth.java.school.ownerservice.normalizer.OwnerRegisterRequestNormalizer;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -32,14 +34,23 @@ public class OwnerServiceImpl implements OwnerService{
     public Mono<OwnerResponse> register(OwnerRegisterRequest request) {
         log.info("Owner registration requested");
 
+        // call OwnerRegisterRequest = OwnerRegisterRequestNormalizer normalizer
         OwnerRegisterRequest normalized = normalizer.normalize(request);
-
+        // mapping => toOwnerDraft insert OwnerRegisterRequest
         Owner draft = ownerMapper.toOwnerDraft(normalized);
+        //call OwnerFactory inert
         Owner pending = ownerFactory.newPendingOwner(draft);
 
         return registrationValidator.validate(normalized)
                 .then(ownerRepository.save(pending))
                 .doOnSuccess(saved -> log.info("Owner registered successfully. ownerId={}", Objects.requireNonNull(saved).getId()))
+                .map(ownerMapper::toResponse);
+    }
+
+    @Override
+    public Mono<OwnerResponse> findById(UUID ownerId) {
+        return ownerRepository.findById(ownerId)
+                .switchIfEmpty(Mono.error( new OwnerNotFoundException(ownerId)))
                 .map(ownerMapper::toResponse);
     }
 

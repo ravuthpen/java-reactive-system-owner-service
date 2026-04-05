@@ -13,12 +13,19 @@ public class OwnerRegisterRequestNormalizer {
     private final PhoneNormalizer phoneNormalizer;
 
     public OwnerRegisterRequest normalize(OwnerRegisterRequest request) {
+        //@TODO don't mutate (do not modify) parameter (create new object)
+        /**
+         * old object
+         request.setEmail(emailNormalizer.normalize(request.getEmail()));
+         request.setPhone(phoneNormalizer.normalize(request.getPhone()));
+         return request;
+         */
+        //created new object
+        OwnerRegisterRequest newRequest = new OwnerRegisterRequest();
+        newRequest.setEmail(emailNormalizer.normalize(request.getEmail()));
+        newRequest.setPhone(phoneNormalizer.normalize(request.getPhone()));
+        return newRequest;
 
-        request.setEmail(emailNormalizer.normalize(request.getEmail()));
-        request.setPhone(phoneNormalizer.normalize(request.getPhone()));
 
-        return request;
     }
-
-    //@TODO don't mutate parameter (create new object)
 }

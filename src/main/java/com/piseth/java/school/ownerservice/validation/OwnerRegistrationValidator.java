@@ -4,12 +4,14 @@ import com.piseth.java.school.ownerservice.dto.OwnerRegisterRequest;
 import com.piseth.java.school.ownerservice.exception.BadRequestException;
 import com.piseth.java.school.ownerservice.repository.OwnerRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class OwnerRegistrationValidator {
 
     private final OwnerRepository ownerRepository;
@@ -67,7 +69,7 @@ public class OwnerRegistrationValidator {
      */
     private Mono<Void> validateUniqueness(OwnerRegisterRequest request) {
         return checkEmailUnique(request.getEmail())
-                .then(checkPhoneUnique(request.getPhone()));
+                .then(Mono.defer(() ->checkPhoneUnique(request.getPhone())));
     }
 
     /**
@@ -85,6 +87,7 @@ public class OwnerRegistrationValidator {
      * and converts the stream into Mono<Void>.
      */
     private Mono<Void> checkEmailUnique(String email) {
+        log.info("Validate Email");
         if (!StringUtils.hasText(email)) {
             return Mono.empty(); // nothing to validate
         }
@@ -104,6 +107,7 @@ public class OwnerRegistrationValidator {
      * This pattern is reusable for any uniqueness validation.
      */
     private Mono<Void> checkPhoneUnique(String phone) {
+        log.info("Validate Phone");
         if (!StringUtils.hasText(phone)) {
             return Mono.empty();
         }
