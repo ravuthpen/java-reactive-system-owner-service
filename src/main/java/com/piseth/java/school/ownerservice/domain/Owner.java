@@ -20,6 +20,8 @@ public class Owner {
     private String email;
     private String phone;
     private OwnerStatus status;
-    private Instant createdAt;
+    private Instant emailVerifiedAt;
+    private Instant phoneVerifiedAt;
+    private Instant createdAt; // created_At
     private Instant updatedAt;
 }

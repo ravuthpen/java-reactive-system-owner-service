@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-drop-not-null-owner-verification-table-verified-at
+      author: piseth
+      changes:
+        - dropNotNullConstraint:
+            tableName: owner_verifications
+            columnName: verified_at
+            columnDataType: timestamptz
